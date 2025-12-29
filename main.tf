@@ -27,7 +27,7 @@ resource "aws_instance" "blog" {
   vpc_security_group_ids = [aws_security_group.blog_sg.id]
 
   tags = {
-    Name = "Learning Terraform"
+    Name = "Terraform Instance"
   }
 }
 
@@ -37,7 +37,7 @@ resource "aws_security_group" "blog_sg" {
   vpc_id      = data.aws_vpc.default.id
 
   tags = {
-    Name = "Blog Security Group"
+    Name = "Blog-SG"
   }
 }
 
