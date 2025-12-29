@@ -14,13 +14,55 @@ data "aws_ami" "app_ami" {
   owners = ["979382823631"] # Bitnami
 }
 
+data "aws_vpc" "default" {
+  default = true
+}
+
 resource "aws_instance" "blog" {
-  ami           = data.aws_ami.app_ami.id
+  ami = data.aws_ami.app_ami.id
   # instance_type = "t3.nano"
   # instance_type = "t2.micro"
   instance_type = var.instance_type
 
+  vpc_security_group_ids = [aws_security_group.blog_sg.id]
+
   tags = {
-    Name = "DemoWebServer"
+    Name = "Learning Terraform"
   }
+}
+
+resource "aws_security_group" "blog_sg" {
+  name        = "blog_sg"
+  description = "Allow HTTP and HTTPSinbound traffic"
+  vpc_id      = data.aws_vpc.default.id
+}
+
+resource "aws_security_group_rule" "allow_http_inbound" {
+  type              = "ingress"
+  from_port         = 80
+  to_port           = 80
+  protocol          = "tcp"
+  cidr_blocks       = ["0.0.0.0/0"]
+
+  security_group_id = aws_security_group.blog_sg.id
+}
+
+resource "aws_security_group_rule" "allow_https_inbound" {
+  type              = "ingress"
+  from_port         = 443
+  to_port           = 443
+  protocol          = "tcp"
+  cidr_blocks       = ["0.0.0.0/0"]
+
+  security_group_id = aws_security_group.blog_sg.id
+}
+
+resource "aws_security_group_rule" "allow_http_outbound" {
+  type              = "egress"
+  from_port         = 0
+  to_port           = 0
+  protocol          = "-1"
+  cidr_blocks       = ["0.0.0.0/0"]
+
+  security_group_id = aws_security_group.blog_sg.id
 }
