@@ -35,6 +35,10 @@ resource "aws_security_group" "blog_sg" {
   name        = "blog_sg"
   description = "Allow HTTP and HTTPSinbound traffic"
   vpc_id      = data.aws_vpc.default.id
+
+  tags = {
+    Name = "Blog Security Group"
+  }
 }
 
 resource "aws_security_group_rule" "allow_http_inbound" {
