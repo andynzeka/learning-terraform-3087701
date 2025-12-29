@@ -33,7 +33,7 @@ resource "aws_instance" "blog" {
 
 resource "aws_security_group" "blog_sg" {
   name        = "blog_sg"
-  description = "Allow HTTP and HTTPSinbound traffic"
+  description = "Allow HTTP and HTTPS inbound traffic"
   vpc_id      = data.aws_vpc.default.id
 
   tags = {
