@@ -27,7 +27,7 @@ resource "aws_instance" "blog" {
   vpc_security_group_ids = [module.blog_module-SG.security_group_id]
 
   tags = {
-    Name = "Terraform Instance"
+    Name = "AppInstance"
   }
 }
 
