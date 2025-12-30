@@ -84,12 +84,6 @@ module "blog_alb" {
       backend_port     = 80
       target_type      = "instance"
       target_id        = module.autoscaling.autoscaling_group_ids[0]
-      health_check = {
-        path                = "/"
-        protocol            = "HTTP"
-        matcher             = "200-399"
-      port             = 80
-    }
   }
   
   listeners = {
