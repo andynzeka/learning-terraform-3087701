@@ -60,6 +60,7 @@ module "blog_alb" {
   vpc_id  = module.blog_module-VPC.vpc_id
   subnets = module.blog_module-VPC.public_subnets
   security_groups = [module.blog_SG.security_group_id]
+  enable_deletion_protection = false
 
   target_groups = {
     blog = {
