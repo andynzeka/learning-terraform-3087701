@@ -7,7 +7,7 @@ output "instance_arn" {
 }
 
 output "module_security_group_id" {
-  value = module.blog_module-SG.security_group_id
+  value = module.blog_SG.security_group_id
 }
 
 output "instance" {
