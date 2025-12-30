@@ -35,21 +35,41 @@ module "blog_module-VPC" {
 
 
 
-resource "aws_instance" "blog" {
-  ami = data.aws_ami.app_ami.id
-  # instance_type = "t3.nano"
-  # instance_type = "t2.micro"
+# resource "aws_instance" "blog" {
+#   ami = data.aws_ami.app_ami.id
+#   # instance_type = "t3.nano"
+#   # instance_type = "t2.micro"
+#   instance_type = var.instance_type
+
+#   vpc_security_group_ids = [module.blog_SG.security_group_id]
+#   subnet_id = module.blog_module-VPC.public_subnets[0]
+
+#   tags = {
+#     Name = "AppInstance"
+#   }
+# }
+
+module "autoscaling" {
+  source  = "terraform-aws-modules/autoscaling/aws"
+  version = "9.0.2"
+  name   = "blog-asg"
+  min_size = 1
+  max_size = 2
+
+  vpc_zone_identifier = module.blog_module-VPC.public_subnets
+  security_groups = [module.blog_SG.security_group_id]
+
+  image_id = data.aws_ami.app_ami.id
   instance_type = var.instance_type
 
-  vpc_security_group_ids = [module.blog_SG.security_group_id]
-  subnet_id = module.blog_module-VPC.public_subnets[0]
-
-  tags = {
-    Name = "AppInstance"
+  traffic_source_attachments = {
+    alb = {
+      target_group_arn = module.blog_alb.target_group_arns["blog"]
+    }
   }
 }
 
-module "alb" {
+module "blog_alb" {
   source = "terraform-aws-modules/alb/aws"
 
   name    = "blog-alb"
