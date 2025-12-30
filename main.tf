@@ -23,6 +23,7 @@ resource "aws_instance" "blog" {
   # instance_type = "t3.nano"
   # instance_type = "t2.micro"
   instance_type = var.instance_type
+  key_name      = "eks-terraform-key"
 
   vpc_security_group_ids = [module.blog_module-SG.security_group_id]
 
