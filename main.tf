@@ -33,22 +33,6 @@ module "blog_module-VPC" {
   }
 }
 
-
-
-# resource "aws_instance" "blog" {
-#   ami = data.aws_ami.app_ami.id
-#   # instance_type = "t3.nano"
-#   # instance_type = "t2.micro"
-#   instance_type = var.instance_type
-
-#   vpc_security_group_ids = [module.blog_SG.security_group_id]
-#   subnet_id = module.blog_module-VPC.public_subnets[0]
-
-#   tags = {
-#     Name = "AppInstance"
-#   }
-# }
-
 module "autoscaling" {
   source  = "terraform-aws-modules/autoscaling/aws"
   version = "9.0.2"
@@ -83,7 +67,7 @@ module "blog_alb" {
       backend_protocol = "HTTP"
       backend_port     = 80
       target_type      = "instance"
-      target_id        = module.autoscaling.autoscaling_instance_ids
+    }
   }
   
   listeners = {
@@ -99,7 +83,7 @@ module "blog_alb" {
     Environment = "dev"
    }
   }
-}
+
 module "blog_SG" {
   source  = "terraform-aws-modules/security-group/aws"
   version = "5.3.1"
