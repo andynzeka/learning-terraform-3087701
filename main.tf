@@ -23,7 +23,6 @@ resource "aws_instance" "blog" {
   # instance_type = "t3.nano"
   # instance_type = "t2.micro"
   instance_type = var.instance_type
-  key_name      = "eks-terraform-key"
 
   vpc_security_group_ids = [module.blog_module-SG.security_group_id]
 
@@ -35,7 +34,7 @@ resource "aws_instance" "blog" {
 module "blog_module-SG" {
   source  = "terraform-aws-modules/security-group/aws"
   version = "5.3.1"
-  name    = "module_blog_new"
+  name    = "Module_AppInstance_SG"
 
   vpc_id = data.aws_vpc.default.id
 
@@ -46,4 +45,3 @@ module "blog_module-SG" {
   egress_cidr_blocks = ["0.0.0.0/0"]
 
 }
-
