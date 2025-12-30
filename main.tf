@@ -83,10 +83,15 @@ module "blog_alb" {
       backend_protocol = "HTTP"
       backend_port     = 80
       target_type      = "instance"
-      target_id        = aws_instance.blog.id
+      target_id        = module.autoscaling.autoscaling_group_ids[0]
+      health_check = {
+        path                = "/"
+        protocol            = "HTTP"
+        matcher             = "200-399"
       port             = 80
     }
   }
+  
   listeners = {
     http = {
       port     = 80
@@ -98,9 +103,9 @@ module "blog_alb" {
   }
   tags = {
     Environment = "dev"
+   }
   }
 }
-
 module "blog_SG" {
   source  = "terraform-aws-modules/security-group/aws"
   version = "5.3.1"
