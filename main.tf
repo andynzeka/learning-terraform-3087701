@@ -48,7 +48,7 @@ module "autoscaling" {
 
   traffic_source_attachments = {
     alb = {
-      target_group_arn = module.blog_alb.target_group_arns["blog"]
+      target_group_arn = module.blog_alb.target_groups["blog"].arn
     }
   }
 }
