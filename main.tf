@@ -26,7 +26,6 @@ module "blog_module-VPC" {
 
   azs             = ["us-east-1a", "us-east-1b", "us-east-1c"]
   public_subnets  = ["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"]
-
   tags = {
     Terraform = "true"
     Environment = "dev"
@@ -42,6 +41,7 @@ module "autoscaling" {
 
   vpc_zone_identifier = module.blog_module-VPC.public_subnets
   security_groups = [module.blog_SG.security_group_id]
+  
 
   image_id = data.aws_ami.app_ami.id
   instance_type = var.instance_type
@@ -68,7 +68,6 @@ module "blog_alb" {
       backend_protocol = "HTTP"
       backend_port     = 80
       target_type      = "instance"
-      create_attachment = false
     }
   }
   
@@ -98,5 +97,5 @@ module "blog_SG" {
 
   egress_rules       = ["all-all"]
   egress_cidr_blocks = ["0.0.0.0/0"]
-
+  
 }
