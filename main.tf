@@ -34,7 +34,7 @@ resource "aws_instance" "blog" {
 module "blog_module-SG" {
   source  = "terraform-aws-modules/security-group/aws"
   version = "5.3.1"
-  name    = "blog_new"
+  name    = "module_blog_new"
 
   vpc_id = data.aws_vpc.default.id
 
@@ -46,42 +46,42 @@ module "blog_module-SG" {
 
 }
 
-resource "aws_security_group" "blog_sg" {
-  name        = "blog_sg"
-  description = "Allow HTTP and HTTPS inbound traffic"
-  vpc_id      = data.aws_vpc.default.id
+# resource "aws_security_group" "blog_sg" {
+#   name        = "blog_sg"
+#   description = "Allow HTTP and HTTPS inbound traffic"
+#   vpc_id      = data.aws_vpc.default.id
 
-  tags = {
-    Name = "Blog-SG"
-  }
-}
+#   tags = {
+#     Name = "Blog-SG"
+#   }
+# }
 
-resource "aws_security_group_rule" "allow_http_inbound" {
-  type        = "ingress"
-  from_port   = 80
-  to_port     = 80
-  protocol    = "tcp"
-  cidr_blocks = ["0.0.0.0/0"]
+# resource "aws_security_group_rule" "allow_http_inbound" {
+#   type        = "ingress"
+#   from_port   = 80
+#   to_port     = 80
+#   protocol    = "tcp"
+#   cidr_blocks = ["0.0.0.0/0"]
 
-  security_group_id = aws_security_group.blog_sg.id
-}
+#   security_group_id = aws_security_group.blog_sg.id
+# }
 
-resource "aws_security_group_rule" "allow_https_inbound" {
-  type        = "ingress"
-  from_port   = 443
-  to_port     = 443
-  protocol    = "tcp"
-  cidr_blocks = ["0.0.0.0/0"]
+# resource "aws_security_group_rule" "allow_https_inbound" {
+#   type        = "ingress"
+#   from_port   = 443
+#   to_port     = 443
+#   protocol    = "tcp"
+#   cidr_blocks = ["0.0.0.0/0"]
 
-  security_group_id = aws_security_group.blog_sg.id
-}
+#   security_group_id = aws_security_group.blog_sg.id
+# }
 
-resource "aws_security_group_rule" "allow_http_outbound" {
-  type        = "egress"
-  from_port   = 0
-  to_port     = 0
-  protocol    = "-1"
-  cidr_blocks = ["0.0.0.0/0"]
+# resource "aws_security_group_rule" "allow_http_outbound" {
+#   type        = "egress"
+#   from_port   = 0
+#   to_port     = 0
+#   protocol    = "-1"
+#   cidr_blocks = ["0.0.0.0/0"]
 
-  security_group_id = aws_security_group.blog_sg.id
-}
+#   security_group_id = aws_security_group.blog_sg.id
+# }
